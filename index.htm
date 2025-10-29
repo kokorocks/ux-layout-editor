@@ -37,8 +37,15 @@
         --gridstack-item: light-dark(var(--gridstack-item-light), var(--gridstack-item-dark));
         --gridstack-container: light-dark(var(--gridstack-container-light), var(--gridstack-container-dark));
         --editors: light-dark(var(--editors-light), var(--editors-dark));
-        --shadow: light-dark(var(--shadow-light), var(--shadow-dark));
+        /* default to light shadow — override in media query for dark */
+        --shadow: var(--shadow-light);
         
+    }
+    /* Make shadows follow the system color-scheme (so "auto" works) */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --shadow: var(--shadow-dark);
+      }
     }
 
   body {
@@ -457,6 +464,7 @@ document.addEventListener('DOMContentLoaded', () => {
     buttons.forEach(b => b.classList.remove('active'));
     // persist preference in cookie for 1 year
     setCookie('preferred-theme', theme, 365);
+
     if (theme === 'light') {
       root.style.setProperty('--defualt-text-color', 'var(--defualt-text-color-light)');
       root.style.setProperty('--button-color', 'var(--button-color-light)');
@@ -465,11 +473,9 @@ document.addEventListener('DOMContentLoaded', () => {
       root.style.setProperty('--gridstack-container', 'var(--gridstack-container-light)');
       root.style.setProperty('--editors', 'var(--editors-light)');
       root.style.setProperty('--shadow', 'var(--shadow-light)');
-      
+
       lightBtn.classList.add('active');
-      if (monaco?.editor) {
-        monaco.editor.setTheme('vs-light');
-      }
+      if (monaco?.editor) monaco.editor.setTheme('vs-light');
     } else if (theme === 'dark') {
       root.style.setProperty('--defualt-text-color', 'var(--defualt-text-color-dark)');
       root.style.setProperty('--button-color', 'var(--button-color-dark)');
@@ -478,26 +484,24 @@ document.addEventListener('DOMContentLoaded', () => {
       root.style.setProperty('--gridstack-container', 'var(--gridstack-container-dark)');
       root.style.setProperty('--editors', 'var(--editors-dark)');
       root.style.setProperty('--shadow', 'var(--shadow-dark)');
-      
+
       darkBtn.classList.add('active');
-      if (monaco?.editor) {
-        monaco.editor.setTheme('vs-dark');
-      }
+      if (monaco?.editor) monaco.editor.setTheme('vs-dark');
     } else {
-      // Auto mode
+      // Auto: remove any inline --shadow so CSS media query controls it
       root.style.setProperty('--defualt-text-color', 'light-dark(var(--defualt-text-color-light), var(--defualt-text-color-dark))');
       root.style.setProperty('--button-color', 'light-dark(var(--button-color-light), var(--button-color-dark))');
       root.style.setProperty('--bg-color', 'light-dark(var(--bg-color-light), var(--bg-color-dark))');
       root.style.setProperty('--gridstack-item', 'light-dark(var(--gridstack-item-light), var(--gridstack-item-dark))');
       root.style.setProperty('--gridstack-container', 'light-dark(var(--gridstack-container-light), var(--gridstack-container-dark))');
       root.style.setProperty('--editors', 'light-dark(var(--editors-light), var(--editors-dark))');
-      root.style.setProperty('--shadow', 'light-dark(var(--shadow-light), var(--shadow-dark))');
-      
+
+      // IMPORTANT: let the CSS @media (prefers-color-scheme) control --shadow
+      root.style.removeProperty('--shadow');
+
       autoBtn.classList.add('active');
       const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (monaco?.editor) {
-        monaco.editor.setTheme(isDark ? 'vs-dark' : 'vs-light');
-      }
+      if (monaco?.editor) monaco.editor.setTheme(isDark ? 'vs-dark' : 'vs-light');
     }
   }
   
