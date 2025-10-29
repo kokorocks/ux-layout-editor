@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Gridstack + Monaco → Pure CSS Export (with Context Menu)</title>
+<title>layout editor</title>
 
 <link href="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack.min.css" rel="stylesheet" />
 
@@ -104,15 +104,29 @@ function addMonacoWidget() {
 
 // Export CSS to Monaco editor
 function exportCSS() {
-  let css = `.grid-container { display: grid; grid-template-columns: repeat(${CONFIG.cols}, 1fr); grid-auto-rows: ${CONFIG.cellHeight}px; gap: ${CONFIG.gap}px; }\n`;
+  let css = `.container { display: grid; grid-template-columns: repeat(${CONFIG.cols}, 1fr); grid-auto-rows: ${CONFIG.cellHeight}px; gap: ${CONFIG.gap}px; }\n`;
   // grid.engine.nodes contains the node objects
   if (grid && grid.engine && Array.isArray(grid.engine.nodes)) {
     grid.engine.nodes.forEach(n => {
       const id = n.el?.dataset?.gsId || `unknown-${n.id || n.el?.id || Math.random().toString(36).slice(2,8)}`;
-      css += `.item-${id} { grid-column: ${n.x + 1} / span ${n.w}; grid-row: ${n.y + 1} / span ${n.h}; }\n`;
+      css += `.${id} { grid-column: ${n.x + 1} / span ${n.w}; grid-row: ${n.y + 1} / span ${n.h}; }\n`;
     });
   }
   if(cssMonaco) cssMonaco.setValue(css);
+  exportHTML()
+}
+function exportHTML() {
+  let css = `.container { display: grid; grid-template-columns: repeat(${CONFIG.cols}, 1fr); grid-auto-rows: ${CONFIG.cellHeight}px; gap: ${CONFIG.gap}px; }\n`;
+  let html = `<div class='container'>`
+  // grid.engine.nodes contains the node objects
+  if (grid && grid.engine && Array.isArray(grid.engine.nodes)) {
+    grid.engine.nodes.forEach(n => {
+      const id = n.el?.dataset?.gsId || `unknown-${n.id || n.el?.id || Math.random().toString(36).slice(2,8)}`;
+      html += `<div class='${id}'> ${id} </div>\n`;
+    });
+    html+='</div>'
+  }
+  if(htmlMonaco) htmlMonaco.setValue(html);
 }
 
 // DOM ready
@@ -126,7 +140,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Button events
   document.getElementById('add').addEventListener('click', () => addWidget('empty', { w:2, h:2 }));
-
 
 
 
