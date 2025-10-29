@@ -12,14 +12,16 @@
     color-scheme: light dark;
     color:var(--defualt-text-color);
 }
+
     :root{
         color-scheme: light dark;
         --defualt-text-color-dark: #f3f5f8;
         --button-color-dark: black; 
         --bg-color-dark:rgb(11, 11, 11);
         --gridstack-item-dark: #08011f;
-        --gridstack-container-dark: #160F30;
+        --gridstack-container-dark: #08031c;
         --editors-dark: #0b0b12;
+        --shadow-dark: 0 4px 12px rgba(227, 227, 227, 0.301);
 
         --defualt-text-color-light: black;
         --button-color-light:#fff;
@@ -27,6 +29,7 @@
         --gridstack-item-light: #fafafa;
         --gridstack-container-light: #fafafa;
         --editors-light: #fff;
+        --shadow-light: 0 4px 12px rgba(0,0,0,0.05); 
 
         --defualt-text-color: light-dark(var(--defualt-text-color-light), var(--defualt-text-color-dark));
         --button-color:light-dark(var(--button-color-light), var(--button-color-dark)); 
@@ -34,6 +37,7 @@
         --gridstack-item: light-dark(var(--gridstack-item-light), var(--gridstack-item-dark));
         --gridstack-container: light-dark(var(--gridstack-container-light), var(--gridstack-container-dark));
         --editors: light-dark(var(--editors-light), var(--editors-dark));
+        --shadow: light-dark(var(--shadow-light), var(--shadow-dark));
         
     }
 
@@ -70,7 +74,7 @@
       display:flex; 
       align-items:center; 
       justify-content:center; 
-      box-shadow:0 4px 12px rgba(0,0,0,0.05); 
+      box-shadow:var(--shadow);
       overflow:hidden; 
     }
   button { 
@@ -185,9 +189,6 @@ let cssMonaco;
     btn.addEventListener('click', () => {
       buttons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-
-      // Later: add your theme-changing logic here
-      //console.log('Selected theme:', btn.textContent);
     });
   });
 
@@ -463,6 +464,7 @@ document.addEventListener('DOMContentLoaded', () => {
       root.style.setProperty('--gridstack-item', 'var(--gridstack-item-light)');
       root.style.setProperty('--gridstack-container', 'var(--gridstack-container-light)');
       root.style.setProperty('--editors', 'var(--editors-light)');
+      root.style.setProperty('--shadow', 'var(--shadow-light)');
       
       lightBtn.classList.add('active');
       if (monaco?.editor) {
@@ -475,6 +477,7 @@ document.addEventListener('DOMContentLoaded', () => {
       root.style.setProperty('--gridstack-item', 'var(--gridstack-item-dark)');
       root.style.setProperty('--gridstack-container', 'var(--gridstack-container-dark)');
       root.style.setProperty('--editors', 'var(--editors-dark)');
+      root.style.setProperty('--shadow', 'var(--shadow-dark)');
       
       darkBtn.classList.add('active');
       if (monaco?.editor) {
@@ -488,6 +491,7 @@ document.addEventListener('DOMContentLoaded', () => {
       root.style.setProperty('--gridstack-item', 'light-dark(var(--gridstack-item-light), var(--gridstack-item-dark))');
       root.style.setProperty('--gridstack-container', 'light-dark(var(--gridstack-container-light), var(--gridstack-container-dark))');
       root.style.setProperty('--editors', 'light-dark(var(--editors-light), var(--editors-dark))');
+      root.style.setProperty('--shadow', 'light-dark(var(--shadow-light), var(--shadow-dark))');
       
       autoBtn.classList.add('active');
       const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
