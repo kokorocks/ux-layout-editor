@@ -7,17 +7,104 @@
 
 <link href="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack.min.css" rel="stylesheet" />
 
-<style>*{color-scheme: light dark;color:light-dark(black,#f3f5f8);}
-  body { font-family: system-ui, sans-serif; background-color:light-dark(#f3f5f8,rgb(31, 31, 31)f8); margin:20px; }
-  h2 { text-align:center; }
-  .toolbar { display:flex; gap:8px; justify-content:center; margin-bottom:12px; flex-wrap: wrap; }
-  .grid-stack {color-scheme: light dark; background-color:light-dark(#fafafa,#160F30); border:2px solid #ccc; border-radius:8px; width:100%; height:100%; margin:auto; max-height: 1500px !important;}
-  .grid-stack-item-content {background-color: light-dark(#fafafa,#08011f);  /*background:linear-gradient(180deg,#ffffff,#f1f3f9);*/ border:1px solid #d0d6e2; border-radius:6px; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.05); overflow:hidden; }
-  button { padding:8px 12px; border-radius:6px; border:1px solid #bbb; background-color:light-dark(#fff, black); cursor:pointer; }
-  button:active { transform:translateY(1px); }
-  input { width:50px; padding:4px; border-radius:4px; border:1px solid #bbb; }
+<style>
+*{
+    color-scheme: light dark;
+    color:var(--defualt-text-color);
+}
+    :root{
+        color-scheme: light dark;
+        --defualt-text-color-dark: #f3f5f8;
+        --button-color-dark: black; 
+        --bg-color-dark:rgb(11, 11, 11);
+        --gridstack-item-dark: #08011f;
+        --gridstack-container-dark: #160F30;
+        --editors-dark: #0b0b12;
+
+
+
+        --defualt-text-color-light: black;
+        --button-color-light:#fff;
+        --bg-color-light:#f3f5f8;
+        --gridstack-item-light: #fafafa;
+        --gridstack-container-light: #fafafa;
+        --editors-light: #fff;
+
+
+
+
+        
+        --defualt-text-color: light-dark(var(--defualt-text-color-light), var(--defualt-text-color-dark));
+        --button-color:light-dark(var(--button-color-light), var(--button-color-dark)); 
+        --bg-color:light-dark(var(--bg-color-light), var(--bg-color-dark));
+        --gridstack-item: light-dark(var(--gridstack-item-light), var(--gridstack-item-dark));
+        --gridstack-container: light-dark(var(--gridstack-container-light), var(--gridstack-container-dark));
+        --editors: light-dark(var(--editors-light), var(--editors-dark));
+        
+        
+        
+
+    }
+
+  body {
+     font-family: system-ui, sans-serif;
+     background-color:var(--bg-color);
+     margin:20px; 
+    }
+  h2 { 
+    text-align:center; 
+  }
+  .toolbar { 
+    display:flex; 
+    gap:8px; 
+    justify-content:center; 
+    margin-bottom:12px; 
+    flex-wrap: wrap; 
+  }
+  .grid-stack {
+    color-scheme: light dark;
+     background-color:var(--gridstack-container);
+     border:2px solid #ccc; 
+     border-radius:8px; 
+     width:100%; 
+     height:100%; 
+     margin:auto; 
+     max-height: 1500px !important;
+    }
+  .grid-stack-item-content {
+    background-color: var(--gridstack-item);
+      /*background:linear-gradient(180deg,#ffffff,#f1f3f9);*/ 
+      border:1px solid #d0d6e2; 
+      border-radius:6px; 
+      display:flex; 
+      align-items:center; 
+      justify-content:center; 
+      box-shadow:0 4px 12px rgba(0,0,0,0.05); 
+      overflow:hidden; 
+    }
+  button { 
+    padding:8px 12px; 
+    border-radius:6px; 
+    border:1px solid #bbb; 
+    background-color:var(--button-color);
+    cursor:pointer; 
+  }
+  button:active {
+     transform:translateY(1px); 
+    }
+  input { 
+    width:50px; 
+    padding:4px; 
+    border-radius:4px; 
+    border:1px solid #bbb; 
+  }
   /* Editors layout: side-by-side with gap */
-  #editors { display: flex; gap: 12px; margin-top: 20px; align-items: stretch; }
+  #editors { 
+    display: flex; 
+    gap: 12px; 
+    margin-top: 20px; 
+    align-items: stretch; 
+  }
   /* child panels inside #editors */
   #editors > .editors {
     flex: 1 1 0%;
@@ -28,7 +115,7 @@
     border-radius: 6px;
     padding: 6px;
     box-sizing: border-box;
-    background: light-dark(#fff, #0b0b12);
+    background: var(--editors)
   }
   /* Monaco containers take full height of their panel */
   #cssEditor, #htmlEditor { height: 100%; }
@@ -39,17 +126,68 @@
 </style>
 </head>
 <body>
-<h2>🧱 Gridstack + Monaco → Export Pure CSS (with Context Menu)</h2>
+<h2>css ux/ui layout designer</h2>
+<style>
+  /*body {
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    gap: 10px;
+  }*/
+  .theme-toggle{text-align: center;}
+  .theme-toggle button {
+    padding: 5px 5px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+
+    align-items: center;
+    gap: 8px;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  .theme-toggle button:hover {
+    background: #ddd;
+  }
+
+  .theme-toggle button.active {
+    background: #007BFF;
+    color: white;
+  }
+
+  .icon-light::before { content: "☀️"; }
+  .icon-dark::before { content: "🌙"; }
+  .icon-auto::before { content: "⚡"; }
+</style>
+</head>
+<body>
+
+<div class="theme-toggle">
+  <button id="lightBtn" class="icon-light"></button>
+  <button id="darkBtn" class="icon-dark"></button>
+  <button id="autoBtn" class="icon-auto"></button>
+</div>
+
+<br>
 
 <div class="toolbar">
   <button id="add">Add widget</button>
-  <button id="addMonaco">Add Monaco</button>
-  <button id="setGridSize">Set Grid Size</button>
   <button id="export">Export CSS</button>
 </div>
 
-<div id="container"><div class="grid-stack"></div></div>
-<div id="editors" class="editors">css:<div id="cssEditor" class="editors"></div>html:<div id="htmlEditor" class="editors"></div></div>
+<div id="container">
+    <div class="grid-stack"></div>
+</div>
+
+<div id="editors" class="editors">
+    css:
+    <div id="cssEditor" class="editors"></div>
+    html:
+    <div id="htmlEditor" class="editors"></div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/gridstack@9.2.0/dist/gridstack-all.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.49.0/min/vs/loader.js"></script>
@@ -60,6 +198,18 @@ let widgetCounter = 0;
 let monacoInstances = {};
 let grid;
 let cssMonaco;
+
+  const buttons = document.querySelectorAll('.theme-toggle button');
+  buttons[2].classList.add('active'); // default to auto
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Later: add your theme-changing logic here
+      //console.log('Selected theme:', btn.textContent);
+    });
+  });
 
 // Initialize the grid
 function initGrid() {
@@ -85,22 +235,6 @@ function addWidget(content, opts) {
   return id;
 }
 
-// Add Monaco widget
-function addMonacoWidget() {
-  widgetCounter++;
-  const id = `item-${widgetCounter}`;
-  const html = `<div class="grid-stack-item" data-gs-id="${id}"><div class="grid-stack-item-content"><div id="monaco-${id}" class="monaco-editor" style="width:100%;height:100%;"></div></div></div>`;
-  grid.addWidget(html, { w: 6, h: 4 });
-  require.config({ paths: { vs: 'https://cdn.jsdelivr.net/npm/monaco-editor@0.49.0/min/vs' }});
-  require(['vs/editor/editor.main'], () => {
-    monacoInstances[id] = monaco.editor.create(document.getElementById(`monaco-${id}`), {
-      value: '// Your code here',
-      language: 'javascript',
-      theme: 'vs-dark',
-      automaticLayout: true
-    });
-  });
-}
 
 // Export CSS to Monaco editor
 function exportCSS() {
@@ -162,12 +296,13 @@ document.addEventListener('DOMContentLoaded', () => {
       automaticLayout: true,
       readOnly: true
     });
-    const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    console.log('Applying theme:', isDark ? 'dark' : 'light');
-    monaco.editor.setTheme(isDark ? 'vs-dark' : 'vs-light');
+    // Do NOT set Monaco theme here. We'll apply the saved/applicable theme after editors are created
+    // so user preference isn't accidentally overridden.
+    console.log('Monaco initialized');
 
-    //window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
-});
+    // Apply saved theme (cookies) now that Monaco is ready
+    applySavedTheme();
+  });
 
 
 
@@ -180,7 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
   contextMenu.id = 'custom-context-menu';
   contextMenu.style.cssText = `
       position: fixed;
-      background: white;
+      background: grey;
       border: 1px solid #ccc;
       border-radius: 4px;
       box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
@@ -303,6 +438,96 @@ document.addEventListener('DOMContentLoaded', () => {
       contextMenu.style.display = 'none'; // Hide the menu
   });
   // --------- End Context Menu Integration ---------
+
+  // Theme toggle functionality
+  const lightBtn = document.getElementById('lightBtn');
+  const darkBtn = document.getElementById('darkBtn');
+  const autoBtn = document.getElementById('autoBtn');
+  
+  // Cookie helpers (persist theme preference across page reloads)
+  function setCookie(name, value, days) {
+    const d = new Date();
+    d.setTime(d.getTime() + (days*24*60*60*1000));
+    document.cookie = `${name}=${encodeURIComponent(value)};expires=${d.toUTCString()};path=/`;
+  }
+  function getCookie(name) {
+    const v = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+    return v ? decodeURIComponent(v.pop()) : null;
+  }
+
+  // Apply saved theme (called after Monaco is initialized)
+  function applySavedTheme() {
+    const saved = getCookie('preferred-theme');
+    if (saved) {
+      setTheme(saved);
+    } else {
+      setTheme('auto');
+    }
+  }
+  
+  function setTheme(theme) {
+    const root = document.documentElement;
+    buttons.forEach(b => b.classList.remove('active'));
+    // persist preference in cookie for 1 year
+    setCookie('preferred-theme', theme, 365);
+    if (theme === 'light') {
+      root.style.setProperty('--defualt-text-color', 'var(--defualt-text-color-light)');
+      root.style.setProperty('--button-color', 'var(--button-color-light)');
+      root.style.setProperty('--bg-color', 'var(--bg-color-light)');
+      root.style.setProperty('--gridstack-item', 'var(--gridstack-item-light)');
+      root.style.setProperty('--gridstack-container', 'var(--gridstack-container-light)');
+      root.style.setProperty('--editors', 'var(--editors-light)');
+      
+      lightBtn.classList.add('active');
+      if (monaco?.editor) {
+        monaco.editor.setTheme('vs-light');
+      }
+    } else if (theme === 'dark') {
+      root.style.setProperty('--defualt-text-color', 'var(--defualt-text-color-dark)');
+      root.style.setProperty('--button-color', 'var(--button-color-dark)');
+      root.style.setProperty('--bg-color', 'var(--bg-color-dark)');
+      root.style.setProperty('--gridstack-item', 'var(--gridstack-item-dark)');
+      root.style.setProperty('--gridstack-container', 'var(--gridstack-container-dark)');
+      root.style.setProperty('--editors', 'var(--editors-dark)');
+      
+      darkBtn.classList.add('active');
+      if (monaco?.editor) {
+        monaco.editor.setTheme('vs-dark');
+      }
+    } else {
+      // Auto mode
+      root.style.setProperty('--defualt-text-color', 'light-dark(var(--defualt-text-color-light), var(--defualt-text-color-dark))');
+      root.style.setProperty('--button-color', 'light-dark(var(--button-color-light), var(--button-color-dark))');
+      root.style.setProperty('--bg-color', 'light-dark(var(--bg-color-light), var(--bg-color-dark))');
+      root.style.setProperty('--gridstack-item', 'light-dark(var(--gridstack-item-light), var(--gridstack-item-dark))');
+      root.style.setProperty('--gridstack-container', 'light-dark(var(--gridstack-container-light), var(--gridstack-container-dark))');
+      root.style.setProperty('--editors', 'light-dark(var(--editors-light), var(--editors-dark))');
+      
+      autoBtn.classList.add('active');
+      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (monaco?.editor) {
+        monaco.editor.setTheme(isDark ? 'vs-dark' : 'vs-light');
+      }
+    }
+  }
+  
+  // Theme button click handlers
+  lightBtn.addEventListener('click', () => setTheme('light'));
+  darkBtn.addEventListener('click', () => setTheme('dark'));
+  autoBtn.addEventListener('click', () => setTheme('auto'));
+
+  // Note: theme application happens in applySavedTheme() which is called after Monaco init.
+  // If Monaco isn't used, call applySavedTheme immediately:
+  if (typeof monaco === 'undefined') applySavedTheme();
+  
+  // Listen for system theme changes in auto mode
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (autoBtn.classList.contains('active')) {
+      if (monaco?.editor) {
+        monaco.editor.setTheme(e.matches ? 'vs-dark' : 'vs-light');
+      }
+    }
+  });
 });
 </script>
 </body>
