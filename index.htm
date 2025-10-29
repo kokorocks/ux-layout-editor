@@ -21,8 +21,6 @@
         --gridstack-container-dark: #160F30;
         --editors-dark: #0b0b12;
 
-
-
         --defualt-text-color-light: black;
         --button-color-light:#fff;
         --bg-color-light:#f3f5f8;
@@ -30,10 +28,6 @@
         --gridstack-container-light: #fafafa;
         --editors-light: #fff;
 
-
-
-
-        
         --defualt-text-color: light-dark(var(--defualt-text-color-light), var(--defualt-text-color-dark));
         --button-color:light-dark(var(--button-color-light), var(--button-color-dark)); 
         --bg-color:light-dark(var(--bg-color-light), var(--bg-color-dark));
@@ -251,12 +245,16 @@ function exportCSS() {
 }
 function exportHTML() {
   let css = `.container { display: grid; grid-template-columns: repeat(${CONFIG.cols}, 1fr); grid-auto-rows: ${CONFIG.cellHeight}px; gap: ${CONFIG.gap}px; }\n`;
-  let html = `<div class='container'>`
+  let html = `<div class='container'>\n`
   // grid.engine.nodes contains the node objects
   if (grid && grid.engine && Array.isArray(grid.engine.nodes)) {
     grid.engine.nodes.forEach(n => {
       const id = n.el?.dataset?.gsId || `unknown-${n.id || n.el?.id || Math.random().toString(36).slice(2,8)}`;
-      html += `<div class='${id}'> ${id} </div>\n`;
+      // Prefer the live innerHTML of the widget content so edits are preserved
+      const contentEl = n.el && n.el.querySelector ? n.el.querySelector('.grid-stack-item-content') : null;
+      const content = contentEl ? contentEl.innerHTML.trim() : id;
+      // If content includes newlines/leading/trailing whitespace, keep it tidy
+      html += `  <div class='${id}'>${content}</div>\n`;
     });
     html+='</div>'
   }
@@ -349,6 +347,8 @@ document.addEventListener('DOMContentLoaded', () => {
               // fallback if API is named differently
               try { grid.movable(gsItem, true); } catch (err) { /* ignore */ }
           }
+          // Update exported HTML to include the edited content
+          try { exportHTML(); } catch (err) { /* ignore if exportHTML not yet defined */ }
       }
   }
 
